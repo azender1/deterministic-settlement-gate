@@ -43,6 +43,7 @@ Outcome Signals
      v
   Settlement (exactly-once)
 ```
+```
 
 ---
 
@@ -62,6 +63,7 @@ FINAL
   |
   v
 SETTLED
+```
 ```
 ## Reference implementation
 
