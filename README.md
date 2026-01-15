@@ -50,8 +50,7 @@ Copy code
 
 ## State machine
 
-```
-mermaid
+```mermaid
 stateDiagram-v2
   [*] --> OPEN
   OPEN --> RESOLVED_PROVISIONAL
