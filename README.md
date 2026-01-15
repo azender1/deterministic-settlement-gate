@@ -50,19 +50,29 @@ Copy code
 
 ## State machine
 
-```mermaid
-stateDiagram-v2
-  [*] --> OPEN
-  OPEN --> RESOLVED_PROVISIONAL
-  RESOLVED_PROVISIONAL --> IN_RECONCILIATION
-  IN_RECONCILIATION --> FINAL
-  FINAL --> SETTLED
-  SETTLED --> [*]
-Ambiguous or conflicting outcomes are isolated in IN_RECONCILIATION.
+```markdown
+## State machine
 
-Settlement is impossible unless the case is FINAL.
+OPEN
+|
+v
+RESOLVED_PROVISIONAL
+|
+v
+IN_RECONCILIATION
+|
+v
+FINAL
+|
+v
+SETTLED
 
-Settlement is idempotent (exactly-once).
+swift
+Copy code
+
+- Ambiguous or conflicting outcomes are isolated in `IN_RECONCILIATION`.
+- Settlement is impossible unless the case is `FINAL`.
+- Settlement is idempotent (exactly-once).
 
 Reference implementation
 The implementation is intentionally small and explicit:
