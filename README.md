@@ -52,10 +52,12 @@ Copy code
 
 ```mermaid
 stateDiagram-v2
-    OPEN --> RESOLVED_PROVISIONAL
-    RESOLVED_PROVISIONAL --> IN_RECONCILIATION
-    IN_RECONCILIATION --> FINAL
-    FINAL --> SETTLED
+  [*] --> OPEN
+  OPEN --> RESOLVED_PROVISIONAL
+  RESOLVED_PROVISIONAL --> IN_RECONCILIATION
+  IN_RECONCILIATION --> FINAL
+  FINAL --> SETTLED
+  SETTLED --> [*]
 Ambiguous or conflicting outcomes are isolated in IN_RECONCILIATION
 
 Settlement is impossible unless the case is FINAL
