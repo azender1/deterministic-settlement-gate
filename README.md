@@ -1,9 +1,9 @@
 # Deterministic Settlement Gate
 
-A reference implementation of a **deterministic settlement and dispute containment control layer**
+A reference implementation of a deterministic settlement and dispute containment control layer
 for systems that rely on external outcome resolution (oracles, AI agents, referees, APIs, or humans).
 
-This pattern sits **between outcome resolution and payout** and prevents money from moving unless
+This pattern sits between outcome resolution and payout and prevents money from moving unless
 the system can prove the outcome is final and unambiguous.
 
 ---
@@ -21,54 +21,30 @@ suffer from recurring failure modes:
 
 Most platforms handle these with ad hoc rules, retries, or manual intervention.
 
-This project demonstrates a **formal control-plane architecture** that eliminates those failure modes
+This project demonstrates a formal control-plane architecture that eliminates those failure modes
 by enforcing deterministic state transitions, reconciliation, and exactly-once settlement.
 
 ---
 
-## High-level flow
+## High-level flow (conceptual)
 
-Outcome Signals
-|
-v
-+-------------------+
-| Reconciliation | <-- conflict detection & containment
-+-------------------+
-|
-v
-+-------------------+
-| Finality Gate | <-- settlement blocked unless FINAL
-+-------------------+
-|
-v
-Settlement (exactly-once)
-
-yaml
-Copy code
+Outcome Signals  
+→ Reconciliation (conflict detection & containment)  
+→ Finality Gate (settlement blocked unless FINAL)  
+→ Settlement (exactly-once)
 
 ---
 
-## State machine
+## State machine (conceptual)
 
-OPEN
-|
-v
-RESOLVED_PROVISIONAL
-|
-v
-IN_RECONCILIATION
-|
-v
-FINAL
-|
-v
-SETTLED
+OPEN  
+→ RESOLVED_PROVISIONAL  
+→ IN_RECONCILIATION  
+→ FINAL  
+→ SETTLED  
 
-yaml
-Copy code
-
-- Ambiguous or conflicting outcomes are isolated in `IN_RECONCILIATION`.
-- Settlement is impossible unless the case is `FINAL`.
+- Ambiguous or conflicting outcomes are isolated in IN_RECONCILIATION.  
+- Settlement is impossible unless the case is FINAL.  
 - Settlement is idempotent (exactly-once).
 
 ---
@@ -77,23 +53,22 @@ Copy code
 
 The implementation is intentionally small and explicit:
 
-- `models.py` — case, signals, and states  
-- `state_machine.py` — deterministic transition rules  
-- `reconciliation.py` — conflict detection and resolution  
-- `gate.py` — exactly-once settlement gate  
-- `store.py` — simple in-memory persistence  
-- `examples/simulate.py` — runnable scenarios  
+- models.py — case, signals, and states  
+- state_machine.py — deterministic transition rules  
+- reconciliation.py — conflict detection and resolution  
+- gate.py — exactly-once settlement gate  
+- store.py — simple in-memory persistence  
+- examples/simulate.py — runnable scenarios  
 
-This is not a framework. It is a **pattern demonstration**.
+This is not a framework. It is a pattern demonstration.
 
 ---
 
 ## Running the example
 
-python examples/simulate.py
+Run the following command from the project root:
 
-yaml
-Copy code
+python examples/simulate.py
 
 The example demonstrates:
 
@@ -106,7 +81,7 @@ The example demonstrates:
 
 ## Scope & intent
 
-This project is **not** a product and **not** a trading system.
+This project is not a product and not a trading system.
 
 It exists to make a settlement integrity pattern concrete and discussable,
 particularly for systems involving:
