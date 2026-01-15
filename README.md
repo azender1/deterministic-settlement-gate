@@ -89,10 +89,9 @@ This is not a framework. It is a **pattern demonstration**.
 
 ## Running the example
 
+```
 python examples/simulate.py
-
-yaml
-Copy code
+```
 
 The example demonstrates:
 
