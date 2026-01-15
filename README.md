@@ -58,11 +58,11 @@ stateDiagram-v2
   IN_RECONCILIATION --> FINAL
   FINAL --> SETTLED
   SETTLED --> [*]
-Ambiguous or conflicting outcomes are isolated in IN_RECONCILIATION
+Ambiguous or conflicting outcomes are isolated in IN_RECONCILIATION.
 
-Settlement is impossible unless the case is FINAL
+Settlement is impossible unless the case is FINAL.
 
-Settlement is idempotent (exactly-once)
+Settlement is idempotent (exactly-once).
 
 Reference implementation
 The implementation is intentionally small and explicit:
