@@ -50,9 +50,16 @@ def scenario_conflict():
     print("resolved:", case.final_outcome, "state:", case.state)
 
     sid = attempt_settlement(case)
-    print("settled:", sid, "state:", case.state)
+    print("settled:", sid, "state:", case.state)    # Replay / double-settlement attempts (should be safe)
+    for i in (1, 2):
+        try:
+            replay_result = gate.settle(case_id)
+            print(f"replay settle attempt {i}: {replay_result}")
+        except Exception as e:
+            print(f"replay settle attempt {i}: blocked ({type(e).__name__}: {e})")
 
 
 if __name__ == "__main__":
     scenario_clean()
     scenario_conflict()
+
