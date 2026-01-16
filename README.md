@@ -45,13 +45,9 @@ Outcome Signals
      |
      v
   Settlement (exactly-once)
-
-
----
-
-## State machine
-
-```text
+State machine
+text
+Copy code
 OPEN
   |
   v
@@ -71,51 +67,54 @@ Settlement is impossible unless the case is FINAL
 
 Settlement is idempotent (exactly-once)
 
----
-
-## Reference implementation
-
+Reference implementation
 The implementation is intentionally small and explicit:
 
-- models.py — case, signals, and states  
-- state_machine.py — deterministic transition rules  
-- reconciliation.py — conflict detection and resolution  
-- gate.py — exactly-once settlement gate  
-- store.py — simple in-memory persistence  
-- examples/simulate.py — runnable scenarios  
+models.py — case, signals, and states
+
+state_machine.py — deterministic transition rules
+
+reconciliation.py — conflict detection and resolution
+
+gate.py — exactly-once settlement gate
+
+store.py — simple in-memory persistence
+
+examples/simulate.py — runnable scenarios
 
 This is not a framework. It is a pattern demonstration.
 
----
+Running the example
+From the project root:
 
-## Running the example
-
-Run the following command from the project root:
-
+text
+Copy code
 python examples/simulate.py
-
 The example demonstrates:
 
-- Clean resolution and settlement  
-- Conflicting signals triggering reconciliation  
-- Settlement blocked until finality  
-- Idempotent (replay-safe) settlement  
+Clean resolution and settlement
 
----
+Conflicting signals triggering reconciliation
 
-## Scope & intent
+Settlement blocked until finality
 
+Idempotent (replay-safe) settlement
+
+Scope & intent
 This project is not a product and not a trading system.
-This repository is for **software architecture and reliability pattern discussion only**.  
-It is **not financial advice**, **not an offer to operate a regulated market**, and **not a trading platform**.
 
+This repository is for software architecture and reliability pattern discussion only.
+It is not financial advice, not an offer to operate a regulated market, and not a trading platform.
 
 It exists to make a settlement integrity pattern concrete and discussable,
 particularly for systems involving:
 
-- oracle-based resolution  
-- autonomous or AI-driven agents  
-- human + machine hybrids  
-- regulated or high-liability payouts  
+oracle-based resolution
+
+autonomous or AI-driven agents
+
+human + machine hybrids
+
+regulated or high-liability payouts
 
 Feedback, critique, and discussion are welcome.
