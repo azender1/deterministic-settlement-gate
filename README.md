@@ -6,6 +6,8 @@ for systems that rely on external outcome resolution (oracles, AI agents, refere
 This pattern sits between outcome resolution and payout and prevents money from moving unless
 the system can prove the outcome is final and unambiguous.
 
+> ✅ **CI Verified:** GitHub Actions runs `python examples/simulate.py` on every push to validate behavior.
+
 ---
 
 ## Why this exists
@@ -26,26 +28,48 @@ by enforcing deterministic state transitions, reconciliation, and exactly-once s
 
 ---
 
-## High-level flow (conceptual)
+## High-level flow
 
-Outcome Signals  
-→ Reconciliation (conflict detection & containment)  
-→ Finality Gate (settlement blocked unless FINAL)  
-→ Settlement (exactly-once)
+```text
+Outcome Signals
+     |
+     v
++-------------------+
+|  Reconciliation   |  <-- conflict detection & containment
++-------------------+
+     |
+     v
++-------------------+
+|   Finality Gate   |  <-- settlement blocked unless FINAL
++-------------------+
+     |
+     v
+  Settlement (exactly-once)
+
 
 ---
 
-## State machine (conceptual)
+## State machine
 
-OPEN  
-→ RESOLVED_PROVISIONAL  
-→ IN_RECONCILIATION  
-→ FINAL  
-→ SETTLED  
+```text
+OPEN
+  |
+  v
+RESOLVED_PROVISIONAL
+  |
+  v
+IN_RECONCILIATION
+  |
+  v
+FINAL
+  |
+  v
+SETTLED
+Ambiguous or conflicting outcomes are isolated in IN_RECONCILIATION
 
-- Ambiguous or conflicting outcomes are isolated in IN_RECONCILIATION.  
-- Settlement is impossible unless the case is FINAL.  
-- Settlement is idempotent (exactly-once).
+Settlement is impossible unless the case is FINAL
+
+Settlement is idempotent (exactly-once)
 
 ---
 
@@ -82,6 +106,9 @@ The example demonstrates:
 ## Scope & intent
 
 This project is not a product and not a trading system.
+This repository is for **software architecture and reliability pattern discussion only**.  
+It is **not financial advice**, **not an offer to operate a regulated market**, and **not a trading platform**.
+
 
 It exists to make a settlement integrity pattern concrete and discussable,
 particularly for systems involving:
