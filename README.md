@@ -34,17 +34,13 @@ by enforcing deterministic state transitions, reconciliation, and exactly-once s
 Outcome Signals
      |
      v
-+-------------------+
-|  Reconciliation   |  <-- conflict detection & containment
-+-------------------+
+Reconciliation
      |
      v
-+-------------------+
-|   Finality Gate   |  <-- settlement blocked unless FINAL
-+-------------------+
+Finality Gate
      |
      v
-  Settlement (exactly-once)
+Settlement (exactly-once)
 State machine
 text
 Copy code
