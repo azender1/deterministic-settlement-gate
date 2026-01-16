@@ -30,38 +30,22 @@ by enforcing deterministic state transitions, reconciliation, and exactly-once s
 
 ## High-level flow
 
-```text
-Outcome Signals
-     |
-     v
-Reconciliation
-     |
-     v
-Finality Gate
-     |
-     v
-Settlement (exactly-once)
-State machine
-text
-Copy code
-OPEN
-  |
-  v
-RESOLVED_PROVISIONAL
-  |
-  v
-IN_RECONCILIATION
-  |
-  v
-FINAL
-  |
-  v
-SETTLED
-Ambiguous or conflicting outcomes are isolated in IN_RECONCILIATION
+Outcome Signals  
+→ Reconciliation (conflict detection & containment)  
+→ Finality Gate (blocks settlement unless FINAL)  
+→ Settlement (exactly-once)
 
-Settlement is impossible unless the case is FINAL
+## State machine
 
-Settlement is idempotent (exactly-once)
+OPEN  
+→ RESOLVED_PROVISIONAL  
+→ IN_RECONCILIATION  
+→ FINAL  
+→ SETTLED  
+
+Ambiguous or conflicting outcomes are isolated in IN_RECONCILIATION.  
+Settlement is impossible unless the case is FINAL.  
+Settlement is idempotent (exactly-once).
 
 Reference implementation
 The implementation is intentionally small and explicit:
