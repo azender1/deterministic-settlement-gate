@@ -124,4 +124,5 @@ if __name__ == "__main__":
     scenario_clean()
     scenario_conflict()
     scenario_duplicate_and_late()
-    scenario_three_oracles_majority()			
+    scenario_three_oracles_majority()
+
