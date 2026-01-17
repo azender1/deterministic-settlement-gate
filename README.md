@@ -64,12 +64,12 @@ examples/simulate.py — runnable scenarios
 
 This is not a framework. It is a pattern demonstration.
 
-Running the example
-From the project root:
+```markdown
+## Running the example
 
-text
-Copy code
-python examples/simulate.py
+From the project root, run:
+
+`python examples/simulate.py`
 The example demonstrates:
 
 Clean resolution and settlement
