@@ -67,34 +67,31 @@ This is not a framework. It is a pattern demonstration.
 ```markdown
 ## Running the example
 
-From the project root, run:
+From the project root, execute:
 
 `python examples/simulate.py`
-The example demonstrates:
 
-Clean resolution and settlement
+The simulation demonstrates:
 
-Conflicting signals triggering reconciliation
+- Deterministic resolution and settlement
+- Conflict detection and reconciliation
+- Settlement blocked until finality is reached
+- Idempotent (replay-safe) settlement guarantees
 
-Settlement blocked until finality
+---
 
-Idempotent (replay-safe) settlement
+## Scope & intent
 
-Scope & intent
-This project is not a product and not a trading system.
+This repository is **not a product** and **not a trading system**.
 
-This repository is for software architecture and reliability pattern discussion only.
-It is not financial advice, not an offer to operate a regulated market, and not a trading platform.
+It exists solely to demonstrate a **settlement integrity control pattern** for systems that
+rely on external or probabilistic outcome resolution.
 
-It exists to make a settlement integrity pattern concrete and discussable,
-particularly for systems involving:
+It is intended for discussion and evaluation by engineers working on:
 
-oracle-based resolution
+- oracle-resolved markets
+- autonomous or AI-driven agents
+- human + machine adjudication systems
+- regulated or high-liability payout workflows
 
-autonomous or AI-driven agents
-
-human + machine hybrids
-
-regulated or high-liability payouts
-
-Feedback, critique, and discussion are welcome.
+This code is provided as a **reference implementation**, not a deployable platform.
