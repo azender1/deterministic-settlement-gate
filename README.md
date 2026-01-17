@@ -64,7 +64,6 @@ examples/simulate.py — runnable scenarios
 
 This is not a framework. It is a pattern demonstration.
 
-```markdown
 ## Running the example
 
 From the project root, execute:
