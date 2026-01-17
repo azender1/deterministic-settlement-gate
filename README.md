@@ -64,6 +64,8 @@ examples/simulate.py — runnable scenarios
 
 This is not a framework. It is a pattern demonstration.
 
+Finality policy: Once a case reaches FINAL or SETTLED, late or conflicting signals are ignored and cannot reopen settlement. This enforces hard finality and exactly-once execution.
+
 ## Running the example
 
 From the project root, execute:
