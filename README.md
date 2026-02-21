@@ -39,6 +39,7 @@ Outcome Signals
 
 ## Architecture (Control Plane)
 
+```markdown
 ```mermaid
 flowchart LR
     A["Outcome Signals (oracles / refs / AI / APIs)"]
