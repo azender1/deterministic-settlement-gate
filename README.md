@@ -49,6 +49,7 @@ flowchart LR
 
     A --> B --> C --> D --> E
 
+
 ## State machine
 
 OPEN  
