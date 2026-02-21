@@ -81,6 +81,33 @@ The simulation demonstrates:
 
 ---
 
+## Example trace artifacts (proof without running code)
+
+Running `python examples/simulate.py` writes deterministic trace receipts to:
+
+`examples/traces/`
+
+These are intentionally committed to the repo so reviewers can inspect behavior without executing code.
+
+- Clean settlement: `examples/traces/scenario_clean_case_1.json`
+- Conflicting signals (blocked until FINAL): `examples/traces/scenario_conflict_case_2.json`
+- Duplicate + late signal (ignored after finality): `examples/traces/scenario_duplicate_and_late_case_3.json`
+- 3-oracle / majority resolution: `examples/traces/scenario_three_oracles_majority_case_4.json`
+
+Quick skim (duplicate + late signal case):
+
+```json
+{
+  "scenario": "scenario_duplicate_and_late",
+  "case_id": "case_3",
+  "state": "CaseState.SETTLED",
+  "final_outcome": "YES",
+  "settlement_id": "...",
+  "timestamp_utc": "..."
+}
+
+---
+
 ## Scope & intent
 
 This repository is **not a product** and **not a trading system**.
