@@ -41,16 +41,13 @@ Outcome Signals
 
 ```mermaid
 flowchart LR
-    A[Outcome Signals<br/>(Oracles / Referees / AI / APIs)]
-    B[Reconciliation<br/>(Conflict Detection & Containment)]
-    C[Finality Gate<br/>(Block unless FINAL)]
-    D[Settlement Execution<br/>(Exactly-Once / Idempotent)]
-    E[Ledger / Payout]
+    A["Outcome Signals (oracles / refs / AI / APIs)"]
+    B["Reconciliation (conflict detection + containment)"]
+    C["Finality Gate (block unless FINAL)"]
+    D["Settlement Execution (exactly-once / idempotent)"]
+    E["Ledger / Payout"]
 
-    A --> B
-    B --> C
-    C --> D
-    D --> E
+    A --> B --> C --> D --> E
 
 ## State machine
 
