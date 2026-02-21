@@ -1,11 +1,67 @@
 import sys
 import os
+import json
+from datetime import datetime
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from settlement.models import Case, OutcomeSignal
 from settlement.store import InMemoryStore
 from settlement.reconciliation import ingest_signal, resolve_reconciliation
 from settlement.gate import attempt_settlement, SettlementError
+
+
+def write_trace(name: str, case):
+    """Write a deterministic trace artifact for repo visitors.
+
+    Robust to different signal storage formats (objects, dicts, strings).
+    """
+    def normalize_signal(s):
+        # If it's already a dict-like object
+        if isinstance(s, dict):
+            return {
+                "source": s.get("source"),
+                "outcome": s.get("outcome"),
+                "raw": s,
+            }
+
+        # If it's a simple string (common if signals are stored as "source:outcome" or similar)
+        if isinstance(s, str):
+            # Try to parse a couple common formats; otherwise store as raw string
+            if ":" in s:
+                left, right = s.split(":", 1)
+                return {"source": left.strip(), "outcome": right.strip(), "raw": s}
+            if "|" in s:
+                left, right = s.split("|", 1)
+                return {"source": left.strip(), "outcome": right.strip(), "raw": s}
+            return {"source": None, "outcome": None, "raw": s}
+
+        # If it's an object with attributes like OutcomeSignal
+        source = getattr(s, "source", None)
+        outcome = getattr(s, "outcome", None)
+        if source is not None or outcome is not None:
+            return {"source": source, "outcome": outcome, "raw": repr(s)}
+
+        # Fallback
+        return {"source": None, "outcome": None, "raw": repr(s)}
+
+    signals = getattr(case, "signals", [])
+    artifact = {
+        "scenario": name,
+        "case_id": getattr(case, "case_id", None),
+        "state": str(getattr(case, "state", None)),
+        "final_outcome": getattr(case, "final_outcome", None),
+        "signals": [normalize_signal(s) for s in (signals or [])],
+        "reconciliation_reason": getattr(case, "reconciliation_reason", None),
+        "settlement_id": getattr(case, "settlement_id", None),
+        "timestamp_utc": datetime.utcnow().isoformat() + "Z",
+    }
+
+    os.makedirs("examples/traces", exist_ok=True)
+    path = os.path.join("examples", "traces", f"{name}_{artifact['case_id']}.json")
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(artifact, f, indent=2)
+    print(f"trace written: {path}")
 
 
 def scenario_clean():
@@ -27,6 +83,8 @@ def scenario_clean():
     # replay settlement
     sid2 = attempt_settlement(case)
     print("replay settled:", sid2, "(same id)", sid2 == sid)
+
+    write_trace("scenario_clean", case)
 
 
 def scenario_conflict():
@@ -51,6 +109,9 @@ def scenario_conflict():
 
     sid = attempt_settlement(case)
     print("settled:", sid, "state:", case.state)
+
+    write_trace("scenario_conflict", case)
+
 
 def scenario_duplicate_and_late():
     print("\n--- scenario_duplicate_and_late ---")
@@ -84,6 +145,9 @@ def scenario_duplicate_and_late():
     # Replay settlement attempt (should be idempotent / same id)
     sid2 = attempt_settlement(case)
     print("replay settled:", sid2, "(same id)", sid2 == sid)
+
+    write_trace("scenario_duplicate_and_late", case)
+
 
 def scenario_three_oracles_majority():
     print("\n--- scenario_three_oracles_majority ---")
@@ -120,9 +184,11 @@ def scenario_three_oracles_majority():
     sid2 = attempt_settlement(case)
     print("replay settled:", sid2, "(same id)", sid2 == sid)
 
+    write_trace("scenario_three_oracles_majority", case)
+
+
 if __name__ == "__main__":
     scenario_clean()
     scenario_conflict()
     scenario_duplicate_and_late()
     scenario_three_oracles_majority()
-
