@@ -39,19 +39,15 @@ Outcome Signals
 
 ## Architecture (Control Plane)
 
-
 ```mermaid
 flowchart LR
-    A["Outcome Signals (oracles / refs / AI / APIs)"]
-    B["Reconciliation (conflict detection + containment)"]
-    C["Finality Gate (block unless FINAL)"]
-    D["Settlement Execution (exactly-once / idempotent)"]
+    A["Outcome Signals"]
+    B["Reconciliation"]
+    C["Finality Gate"]
+    D["Settlement Execution"]
     E["Ledger / Payout"]
 
-    A --> B
-    B --> C
-    C --> D
-    D --> E
+    A --> B --> C --> D --> E
 
 ```
 ## State machine
