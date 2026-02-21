@@ -48,7 +48,10 @@ flowchart LR
     D["Settlement Execution (exactly-once / idempotent)"]
     E["Ledger / Payout"]
 
-    A --> B --> C --> D --> E
+    A --> B
+    B --> C
+    C --> D
+    D --> E
 
 ```
 ## State machine
