@@ -39,7 +39,7 @@ Outcome Signals
 
 ## Architecture (Control Plane)
 
-```markdown
+
 ```mermaid
 flowchart LR
     A["Outcome Signals (oracles / refs / AI / APIs)"]
@@ -50,7 +50,7 @@ flowchart LR
 
     A --> B --> C --> D --> E
 
-
+```
 ## State machine
 
 OPEN  
