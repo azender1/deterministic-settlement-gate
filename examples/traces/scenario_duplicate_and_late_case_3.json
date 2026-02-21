@@ -1,0 +1,26 @@
+{
+  "scenario": "scenario_duplicate_and_late",
+  "case_id": "case_3",
+  "state": "CaseState.SETTLED",
+  "final_outcome": "YES",
+  "signals": [
+    {
+      "source": null,
+      "outcome": null,
+      "raw": "6068c165-b02c-435e-b1ea-900b5f91f8bd"
+    },
+    {
+      "source": null,
+      "outcome": null,
+      "raw": "ec9f1549-90c3-4e7a-8b88-763c40006e8f"
+    },
+    {
+      "source": null,
+      "outcome": null,
+      "raw": "86075442-1c45-4ebe-bfe8-e878ca809f8f"
+    }
+  ],
+  "reconciliation_reason": null,
+  "settlement_id": "f3c4d3a2-df27-47f2-92ff-2912b966b6d4",
+  "timestamp_utc": "2026-02-21T04:01:14.009329Z"
+}
