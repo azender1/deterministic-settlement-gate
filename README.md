@@ -35,6 +35,23 @@ Outcome Signals
 → Finality Gate (blocks settlement unless FINAL)  
 → Settlement (exactly-once)
 
+---
+
+## Architecture (Control Plane)
+
+```mermaid
+flowchart LR
+    A[Outcome Signals<br/>(Oracles / Referees / AI / APIs)]
+    B[Reconciliation<br/>(Conflict Detection & Containment)]
+    C[Finality Gate<br/>(Block unless FINAL)]
+    D[Settlement Execution<br/>(Exactly-Once / Idempotent)]
+    E[Ledger / Payout]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+
 ## State machine
 
 OPEN  
