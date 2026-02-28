@@ -6,33 +6,42 @@ for systems that rely on external outcome resolution (oracles, AI agents, refere
 This pattern sits between outcome resolution and payout and prevents money from moving unless  
 the system can prove the outcome is final and unambiguous.
 
-> CI Verified: GitHub Actions runs `python examples/simulate.py` on every push.
-
 ---
 
 ## Why this exists
 
-Many real-money and high-liability systems suffer from recurring failure modes:
+Modern automated systems increasingly rely on external or probabilistic outcomes:
 
-- conflicting oracle or data signals  
-- premature settlement on bad or incomplete data  
-- double settlement / replay  
+- AI agents generating decisions
+- Oracle-resolved prediction markets
+- Referee / API-based match resolution
+- Automated trading strategies dependent on external signals
+
+Common failure modes:
+
+- conflicting outcome signals  
+- premature settlement before finality  
+- replay / double settlement  
 - arbitration loops  
-- AI agents executing on inference instead of verified outcomes  
+- late conflicting data after a case is “final”  
 
-Most platforms handle these with ad hoc rules, retries, or manual intervention.
+Most systems handle this with retries, flags, or manual overrides.
 
-This project demonstrates a formal control-plane architecture that eliminates those failure modes  
-by enforcing deterministic state transitions, reconciliation, and exactly-once settlement.
+This project demonstrates a deterministic control-plane architecture that eliminates those failure modes by enforcing:
+
+- deterministic state transitions  
+- conflict containment before payout  
+- explicit finalization  
+- exactly-once settlement  
 
 ---
 
-## High-level flow
+## High-Level Flow
 
 Outcome Signals  
-→ Reconciliation (conflict detection & containment)  
-→ Finality Gate (blocks settlement unless FINAL)  
-→ Settlement (exactly-once)
+→ Reconciliation  
+→ Finality Gate  
+→ Settlement (exactly-once)  
 
 ---
 
@@ -51,7 +60,7 @@ flowchart LR
 
 ---
 
-## State machine
+## State Machine
 
 OPEN  
 → RESOLVED_PROVISIONAL  
@@ -60,96 +69,94 @@ OPEN
 → SETTLED  
 
 - Ambiguous signals go to IN_RECONCILIATION  
-- Settlement impossible unless FINAL  
-- Settlement is idempotent (exactly-once)  
+- Settlement is impossible unless FINAL  
+- Settlement is idempotent (replay-safe)  
 - Late signals ignored after finality  
 
 ---
 
-## Running the example
+# Modern Integrations
 
-From project root:
+## 1. AI-Agent Outcome Simulation
+
+Demonstrates multiple AI agents generating outcome signals  
+(including conflict scenarios).
+
+Run:
 
 ```bash
-python examples/simulate.py
+python examples/simulate_ai.py
 ```
 
-This demonstrates:
+Shows:
 
-- deterministic settlement lifecycle  
-- conflict detection  
-- reconciliation  
-- finality enforcement  
-- replay-safe settlement  
+- AI-generated signals
+- conflict isolation
+- reconciliation
+- finalization
+- exactly-once settlement
+- trace artifacts written to `examples/traces/`
 
 ---
 
-## Example trace artifacts (proof without running code)
+## 2. Prediction Market Style Demo
 
-Running the simulation writes deterministic receipts to:
+Demonstrates a toy prediction market payout flow:
+
+- participants stake YES/NO
+- external resolution signals arrive
+- settlement gate enforces finality
+- payout receipt generated
+
+Run:
+
+```bash
+python examples/prediction_market_demo.py
+```
+
+Writes payout receipt to:
 
 ```
-examples/traces/
-```
-
-Included in this repo:
-
-- examples/traces/scenario_clean_case_1.json  
-- examples/traces/scenario_conflict_case_2.json  
-- examples/traces/scenario_duplicate_and_late_case_3.json  
-- examples/traces/scenario_three_oracles_majority_case_4.json  
-
-Quick skim (duplicate + late signal case):
-
-```json
-{
-  "scenario": "scenario_duplicate_and_late",
-  "case_id": "case_3",
-  "state": "CaseState.SETTLED",
-  "final_outcome": "YES",
-  "settlement_id": "...",
-  "timestamp_utc": "..."
-}
+examples/receipts/
 ```
 
 ---
 
-## Reference implementation structure
+## Core Implementation Structure
 
 ```
-models.py            case + signal models  
-state_machine.py     deterministic transitions  
-reconciliation.py    conflict detection  
-gate.py              exactly-once settlement enforcement  
-store.py             in-memory persistence  
-examples/simulate.py runnable scenarios  
-```
+models.py                case + signal models  
+state_machine.py         deterministic transitions  
+reconciliation.py        conflict detection  
+gate.py                  exactly-once settlement enforcement  
+store.py                 in-memory persistence  
 
-This repository is intentionally minimal to expose the control pattern clearly.  
-It is not a framework.
+settlement/ai_oracle.py  AI-style outcome generator  
+examples/simulate.py     base scenarios  
+examples/simulate_ai.py  AI-integrated demo  
+examples/prediction_market_demo.py prediction market demo  
+```
 
 ---
 
-## Scope & intent
+## Scope & Intent
 
-This repository is **not a product** and **not a trading system**.
+This repository is **not a trading bot** and **not a production exchange**.
 
-It exists solely to demonstrate a **settlement integrity control pattern** for systems that  
-rely on external or probabilistic outcome resolution.
+It is a reference control-layer pattern for:
 
-Intended for engineers working on:
-
+- AI-driven execution systems  
 - prediction markets  
-- escrow platforms  
-- peer-to-peer wagering  
-- AI-agent execution systems  
-- oracle-resolved systems  
-- regulated payout infrastructure  
+- escrow workflows  
+- oracle-based resolution  
+- high-liability payout infrastructure  
 
-This code is provided as a **reference implementation**, not a deployable platform.
+The focus is settlement integrity, not strategy.
 
 ---
 
-## License
+## Licensing
 
-Apache-2.0
+For commercial licensing or integration discussions, see:
+
+`LICENSING.md`
