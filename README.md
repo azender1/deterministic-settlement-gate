@@ -47,15 +47,19 @@ Outcome Signals
 
 ## Architecture (Control Plane)
 
-```mermaid
-flowchart LR
-    A["Outcome Signals"]
-    B["Reconciliation"]
-    C["Finality Gate"]
-    D["Settlement Execution"]
-    E["Ledger / Payout"]
-
-    A --> B --> C --> D --> E
+Outcome Signals
+|
+v
+Reconciliation
+|
+v
+Finality Gate
+|
+v
+Settlement Execution
+|
+v
+Ledger / Payout
 ```
 
 ---
