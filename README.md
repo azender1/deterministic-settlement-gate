@@ -12,27 +12,27 @@ the system can prove the outcome is final and unambiguous.
 
 Modern automated systems increasingly rely on external or probabilistic outcomes:
 
-- AI agents generating decisions
-- Oracle-resolved prediction markets
-- Referee / API-based match resolution
-- Automated trading strategies dependent on external signals
+- AI agents generating decisions  
+- Oracle-resolved prediction markets  
+- Referee / API-based match resolution  
+- Automated trading systems dependent on external signals  
 
 Common failure modes:
 
-- conflicting outcome signals  
-- premature settlement before finality  
-- replay / double settlement  
-- arbitration loops  
-- late conflicting data after a case is “final”  
+- Conflicting outcome signals  
+- Premature settlement before finality  
+- Replay / double settlement  
+- Arbitration loops  
+- Late conflicting data after a case is "final"  
 
-Most systems handle this with retries, flags, or manual overrides.
+Most implementations rely on retries, flags, or manual overrides.
 
-This project demonstrates a deterministic control-plane architecture that eliminates those failure modes by enforcing:
+This project demonstrates a deterministic control-plane architecture that enforces:
 
-- deterministic state transitions  
-- conflict containment before payout  
-- explicit finalization  
-- exactly-once settlement  
+- Deterministic state transitions  
+- Conflict containment before payout  
+- Explicit finalization  
+- Exactly-once settlement (idempotent execution)  
 
 ---
 
@@ -47,19 +47,15 @@ Outcome Signals
 
 ## Architecture (Control Plane)
 
-Outcome Signals
-|
-v
-Reconciliation
-|
-v
-Finality Gate
-|
-v
-Settlement Execution
-|
-v
-Ledger / Payout
+Outcome Signals  
+  ↓  
+Reconciliation (conflict detection & containment)  
+  ↓  
+Finality Gate (blocks settlement unless FINAL)  
+  ↓  
+Settlement Execution (exactly-once / idempotent)  
+  ↓  
+Ledger / Payout  
 
 ---
 
@@ -71,16 +67,16 @@ OPEN
 → FINAL  
 → SETTLED  
 
-- Ambiguous signals go to IN_RECONCILIATION  
-- Settlement is impossible unless FINAL  
+- Ambiguous signals transition to IN_RECONCILIATION  
+- Settlement is impossible unless state is FINAL  
 - Settlement is idempotent (replay-safe)  
-- Late signals ignored after finality  
+- Late signals are ignored after finality  
 
 ---
 
 # Modern Integrations
 
-## 1. AI-Agent Outcome Simulation
+## 1) AI-Agent Outcome Simulation
 
 Demonstrates multiple AI agents generating outcome signals  
 (including conflict scenarios).
@@ -93,23 +89,23 @@ python examples/simulate_ai.py
 
 Shows:
 
-- AI-generated signals
-- conflict isolation
-- reconciliation
-- finalization
-- exactly-once settlement
-- trace artifacts written to `examples/traces/`
+- AI-generated signals  
+- Conflict isolation  
+- Reconciliation  
+- Finalization  
+- Exactly-once settlement  
+- Trace artifacts written to `examples/traces/`  
 
 ---
 
-## 2. Prediction Market Style Demo
+## 2) Prediction Market Style Demo
 
 Demonstrates a toy prediction market payout flow:
 
-- participants stake YES/NO
-- external resolution signals arrive
-- settlement gate enforces finality
-- payout receipt generated
+- Participants stake YES / NO  
+- External resolution signals arrive  
+- Settlement gate enforces finality  
+- Payout receipt generated  
 
 Run:
 
@@ -128,16 +124,17 @@ examples/receipts/
 ## Core Implementation Structure
 
 ```
-models.py                case + signal models  
-state_machine.py         deterministic transitions  
-reconciliation.py        conflict detection  
-gate.py                  exactly-once settlement enforcement  
-store.py                 in-memory persistence  
+models.py                     case + signal models  
+state_machine.py              deterministic transitions  
+reconciliation.py             conflict detection  
+gate.py                       exactly-once settlement enforcement  
+store.py                      in-memory persistence  
 
-settlement/ai_oracle.py  AI-style outcome generator  
-examples/simulate.py     base scenarios  
-examples/simulate_ai.py  AI-integrated demo  
-examples/prediction_market_demo.py prediction market demo  
+settlement/ai_oracle.py       AI-style outcome generator  
+
+examples/simulate.py                  base scenarios  
+examples/simulate_ai.py               AI-integrated demo  
+examples/prediction_market_demo.py    prediction market demo  
 ```
 
 ---
@@ -149,12 +146,12 @@ This repository is **not a trading bot** and **not a production exchange**.
 It is a reference control-layer pattern for:
 
 - AI-driven execution systems  
-- prediction markets  
-- escrow workflows  
-- oracle-based resolution  
-- high-liability payout infrastructure  
+- Prediction markets  
+- Escrow workflows  
+- Oracle-based resolution  
+- High-liability payout infrastructure  
 
-The focus is settlement integrity, not strategy.
+The focus is settlement integrity, not strategy alpha.
 
 ---
 
@@ -163,3 +160,9 @@ The focus is settlement integrity, not strategy.
 For commercial licensing or integration discussions, see:
 
 `LICENSING.md`
+
+---
+
+## License
+
+Apache-2.0
