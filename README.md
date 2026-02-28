@@ -61,8 +61,6 @@ Settlement Execution
 v
 Ledger / Payout
 
-```
-
 ---
 
 ## State Machine
