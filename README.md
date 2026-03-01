@@ -155,6 +155,27 @@ The focus is settlement integrity, not strategy alpha.
 
 ---
 
+## Production Hardening Additions
+
+The current reference implementation now includes:
+
+### Durable Persistence (SQLiteStore)
+
+- Case state and signals are persisted to SQLite.
+- Settlement state survives process restarts.
+- ACID transactions via SQLite provide single-node crash safety.
+- Designed as a minimal durable layer (can later migrate to Postgres or event sourcing).
+
+### Request-ID (Nonce) Deduplication Layer
+
+- Settlement attempts require a unique `request_id`.
+- Replays using the same `request_id` return the cached settlement result.
+- New request_ids after settlement resolve to the same settlement_id.
+- Prevents duplicate settlement effects across retries or multiple actors.
+- Moves from pure state-based idempotency to explicit request-level deduplication.
+
+These additions close the major single-instance production gaps identified in earlier architectural reviews while preserving the simplicity of the control-plane pattern.
+
 ## Licensing
 
 For commercial licensing or integration discussions, see:
